@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Nekono.App.Pos.Views.LoginPage"
+             NavigationPage.HasNavigationBar="false">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="DarkGray" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <StackLayout Margin="300, 60, 300, 80" Padding="40" Orientation="Vertical" 
+                     VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
+                         BackgroundColor="White">
+
+                <Image Source="NekonoMotoLogo.png" Margin="0,30,0,10"/>
+
+                <Label x:Name="UserIdLabel" Text="USERNAME"/>
+                <Entry x:Name="UserIdEntry" Placeholder="Please enter your username" Text = "{Binding Username}" />
+
+                <Label x:Name="PasswordLabel" Text="PASSWORD"/>
+                <Entry x:Name="PasswordEntry" Placeholder="Please enter your password" Text = "{Binding Password}" IsPassword="true"/>
+                <StackLayout Padding="0,30,0,10" Orientation="Vertical" VerticalOptions="FillAndExpand">
+                    <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
+                    <Button Text="LETS GO" Command="{Binding LoginCommand}" HeightRequest="75" FontAttributes="Bold" FontSize="Large" BackgroundColor="ForestGreen" TextColor="White" />
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

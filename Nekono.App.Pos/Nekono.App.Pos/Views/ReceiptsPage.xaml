@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Title="{Binding Title}"
+             x:Class="Nekono.App.Pos.Views.ReceiptsPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Refresh" Clicked="OnLoadItemsCommand" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsEnabled="{Binding IsNotBusy}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="5*" />
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Column="0">
+                <CollectionView ItemsSource="{Binding CollectionReceipts}" 
+                                    SelectionMode="Single" VerticalScrollBarVisibility="Always"
+                                    SelectedItem="OnSelectedReceipt">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <Frame  Margin="1" Padding="10" BorderColor="White" BackgroundColor="{Binding StatusColor}">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="5*" />
+                                        <ColumnDefinition Width="5*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout Grid.Column="0">
+                                        <Label Text="{Binding TransactionDate}" 
+                                                    d:Text="{Binding .}"
+                                                    LineBreakMode="NoWrap" 
+                                                    Style="{DynamicResource ListItemTextStyle}" 
+                                                    FontSize="20" 
+                                               TextColor="White"/>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding CollectionReceiptNo}" 
+                                                    d:Text="{Binding .}"
+                                                    LineBreakMode="NoWrap" 
+                                                    Style="{DynamicResource ListItemTextStyle}" 
+                                                    FontSize="18" 
+                                               TextColor="White" />
+                                            <Label Text="{Binding Type, StringFormat='- {0}'}" 
+                                                    d:Text="{Binding .}"
+                                                    LineBreakMode="NoWrap" 
+                                                    Style="{DynamicResource ListItemTextStyle}" 
+                                                    FontSize="20"  
+                                               TextColor="White"/>
+                                            <Label Text="{Binding Bank}" 
+                                                    d:Text="{Binding .}"
+                                                    LineBreakMode="NoWrap" 
+                                                    Style="{DynamicResource ListItemTextStyle}" 
+                                                    FontSize="20" 
+                                               TextColor="White" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="1" HorizontalOptions="FillAndExpand" Orientation="Vertical">
+                                        <Label Text="{Binding TotalAmount, StringFormat='PHP {0:n}'}" 
+                                                d:Text="{Binding .}"
+                                                LineBreakMode="NoWrap" 
+                                                Style="{DynamicResource ListItemTextStyle}" 
+                                                FontSize="20"
+                                                HorizontalOptions="EndAndExpand"
+                                                HorizontalTextAlignment="End"
+                                                FontAttributes="Bold" 
+                                               TextColor="White"/>
+                                        <Label Text="{Binding Remarks}" 
+                                                d:Text="{Binding .}"
+                                                LineBreakMode="NoWrap" 
+                                                Style="{DynamicResource ListItemTextStyle}" 
+                                                FontSize="18"
+                                                HorizontalOptions="EndAndExpand"
+                                                HorizontalTextAlignment="End"
+                                               TextColor="White"/>
+                                    </StackLayout>
+                                    </Grid>
+                                </Frame>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnSelectedReceipt"></TapGestureRecognizer>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+            <StackLayout Grid.Column="1" BackgroundColor="White" Padding="10">
+                <Label Text="RECEIPTS DETAILS" 
+                       LineBreakMode="NoWrap" 
+                        Style="{DynamicResource ListItemTextStyle}" 
+                        FontSize="20"
+                       HorizontalTextAlignment="Center"
+                       FontAttributes="Bold"/>
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2.75*"></RowDefinition>
+                        <RowDefinition Height="6*"></RowDefinition>
+                        <RowDefinition Height="1.25*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="7*" />
+                    </Grid.ColumnDefinitions>
+                    <StackLayout Padding="10" Grid.Column="0" Grid.Row="0">
+                        <Label Text="Transaction Date" 
+                           LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="18"/>
+                        <Label Text="Receipt #" 
+                           LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="18"/>
+                        <Label Text="Payment Method" 
+                           LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="18"/>
+                        <Label Text="Status" 
+                           LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="18"/>
+                        <Label Text="Total Amount" 
+                           LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="18"/>
+                        <Label Text="Remarks" 
+                           LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="18"/>
+                    </StackLayout>
+                    <StackLayout Padding="10" Grid.Column="1" Grid.Row="0">
+                        <Label Text="{Binding TransactionDate}" 
+                           LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            HorizontalTextAlignment="End"
+                            FontSize="18"/>
+                        <Label Text="{Binding ReceiptNo}" 
+                           LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            HorizontalTextAlignment="End"
+                            FontSize="18"/>
+                        <Label Text="{Binding PaymentMethod}" 
+                           LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            HorizontalTextAlignment="End"
+                            FontSize="18"/>
+                        <Label Text="{Binding ReceiptStatus}" 
+                           LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            HorizontalTextAlignment="End"
+                               FontAttributes="Bold"
+                               TextColor="{Binding TextStatusColor}"
+                            FontSize="18"/>
+                        <Label Text="{Binding ReceiptTotalAmount}" 
+                            LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            HorizontalTextAlignment="End"
+                            FontSize="18"/>
+                        <Label Text="{Binding Remarks}" 
+                           LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            HorizontalTextAlignment="End"
+                            FontSize="18"/>
+                    </StackLayout>
+                    <StackLayout Padding="10" Grid.ColumnSpan="2" Grid.Row="1" VerticalOptions="FillAndExpand">
+                        <Label Text="ITEMS INCLUDED" 
+                           Style="{DynamicResource ListItemTextStyle}" 
+                           FontSize="20"
+                           HorizontalTextAlignment="Center"
+                           FontAttributes="Bold"/>
+                        <RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+                            <CollectionView x:Name="ItemsCollectionView" ItemsSource="{Binding Items}" VerticalScrollBarVisibility="Always">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="4.5*" />
+                                                <ColumnDefinition Width="5.5*" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackLayout Padding="10" Grid.Column="0">
+                                                <Label Text="{Binding ItemName}" 
+                                        d:Text="{Binding .}"
+                                        LineBreakMode="NoWrap" 
+                                        Style="{DynamicResource ListItemTextStyle}" 
+                                        FontSize="20" />
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="{Binding Type, StringFormat='{0} - '}" 
+                                            d:Text="Item descripton"
+                                            LineBreakMode="NoWrap"
+                                            Style="{DynamicResource ListItemDetailTextStyle}"
+                                            FontSize="15" />
+                                                    <Label Text="{Binding Qty, StringFormat='{0} X '}" 
+                                            d:Text="Item descripton"
+                                            LineBreakMode="NoWrap"
+                                            Style="{DynamicResource ListItemDetailTextStyle}"
+                                            FontSize="15" />
+                                                    <Label Text="{Binding AmountPerQty, StringFormat='{0:n}'}" 
+                                                        d:Text="Item descripton"
+                                                        LineBreakMode="NoWrap"
+                                                        Style="{DynamicResource ListItemDetailTextStyle}"
+                                                        FontSize="15" />
+                                                </StackLayout>
+                                            </StackLayout>
+                                            <StackLayout Padding="10" Grid.Column="1" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                                                <Label Text="{Binding TotalAmount, StringFormat='PHP {0:n}'}" 
+                                                d:Text="{Binding .}"
+                                                LineBreakMode="NoWrap" 
+                                                Style="{DynamicResource ListItemTextStyle}" 
+                                                FontSize="20"
+                                                HorizontalOptions="EndAndExpand"
+                                                HorizontalTextAlignment="End"
+                                                VerticalOptions="Center"
+                                                FontAttributes="Bold"/>
+                                            </StackLayout>
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </RefreshView>
+                        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
+                    </StackLayout>
+                    <StackLayout Grid.ColumnSpan="2" Grid.Row="2" Orientation="Horizontal" VerticalOptions="EndAndExpand">
+                        <Button x:Name="btnRePrint"
+                            Text="RE-PRINT"
+                            HorizontalOptions="FillAndExpand"
+                            FontSize="30"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            HeightRequest="100"
+                            BackgroundColor="ForestGreen"
+                            IsEnabled="{Binding IsNotBusy}"
+                            Command="{Binding ReprintCommand}"/>
+                        <Button x:Name="btnVoid"
+                            Text="VOID"
+                            FontSize="30"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            HeightRequest="100"
+                            BackgroundColor="Red"
+                            IsEnabled="{Binding IsNotBusy}"
+                            Command="{Binding VoidCommand}"/>
+                    </StackLayout>
+                </Grid>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

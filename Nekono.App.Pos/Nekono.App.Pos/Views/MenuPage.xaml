@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Nekono.App.Pos.Views.MenuPage"
+             Title="Menu">
+
+    <StackLayout VerticalOptions="FillAndExpand">
+        <Image Source="NekonoMotoLogo.png" Margin="0,30,0,10">
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="OnKickDrawer"></TapGestureRecognizer>
+            </Image.GestureRecognizers>
+        </Image>
+        <Label x:Name="LoggedInUsername" 
+               Text="-"
+               HorizontalTextAlignment="Center"/>
+        <Label Text="NEKONOMOTO - GEN. T VAL"
+               HorizontalTextAlignment="Center"/>
+        <ListView x:Name="ListViewMenu"
+                    HasUnevenRows="True"
+                    Margin="0, 20, 0, 20">
+            <d:ListView.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Item 1</x:String>
+                    <x:String>Item 2</x:String>
+                </x:Array>
+            </d:ListView.ItemsSource>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="20">
+                            <Label Text="{Binding Title}" d:Text="{Binding .}" FontSize="30" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                            <Label Text="{Binding Title}" d:Text="{Binding .}" FontSize="30" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackLayout VerticalOptions="EndAndExpand" Margin="20">
+            <Label x:Name="VersionNo" 
+               Text="v1.0.1"
+               HorizontalTextAlignment="Center"/>
+            <Button Text="Logout" HorizontalOptions="FillAndExpand" Margin="0, 10, 0, 0" Clicked="OnLogoutCommand"/>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

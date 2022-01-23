@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Nekono.App.Pos.Renderer"
+             mc:Ignorable="d"
+             Title="{Binding Title}"
+             x:Class="Nekono.App.Pos.Views.SalesPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Clear" Clicked="ClearItem_Clicked" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsEnabled="{Binding IsNotBusy}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="6*" />
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Column="0" Margin="10">
+                <Frame  HorizontalOptions="FillAndExpand" HasShadow="True">
+                    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="8.5*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="SEARCH ITEM #" 
+                               Grid.Column="0"
+                               VerticalTextAlignment="Center"/>
+                        <local:BarcodeEntry x:Name="eBarcode" 
+                           Placeholder="Scan a barcode" 
+                           HorizontalOptions="FillAndExpand" 
+                           VerticalOptions="Center"
+                           Text="{Binding BarcodeScannedText}"
+                           Completed="OnCompleted"
+                           Keyboard="Numeric"
+                           Grid.Column="1"
+                           HeightRequest="60"/>
+                    </Grid>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapToFocusOnBarcodeEntry"></TapGestureRecognizer>
+                    </Frame.GestureRecognizers>
+                </Frame>
+                <CollectionView ItemsSource="{Binding Items}" SelectionMode="Single">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4.5*" />
+                                    <ColumnDefinition Width="5.5*" />
+                                </Grid.ColumnDefinitions>
+                                <StackLayout Padding="10" Grid.Column="0">
+                                    <Label Text="{Binding ItemName}" 
+                                        d:Text="{Binding .}"
+                                        LineBreakMode="NoWrap" 
+                                        Style="{DynamicResource ListItemTextStyle}" 
+                                        FontSize="20" />
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding Type, StringFormat='{0} - '}" 
+                                            d:Text="Item descripton"
+                                            LineBreakMode="NoWrap"
+                                            Style="{DynamicResource ListItemDetailTextStyle}"
+                                            FontSize="15" />
+                                        <Label Text="{Binding Qty, StringFormat='{0} X '}" 
+                                            d:Text="Item descripton"
+                                            LineBreakMode="NoWrap"
+                                            Style="{DynamicResource ListItemDetailTextStyle}"
+                                            FontSize="15" />
+                                        <Label Text="{Binding AmountPerQty, StringFormat='{0:n}'}" 
+                                            d:Text="Item descripton"
+                                            LineBreakMode="NoWrap"
+                                            Style="{DynamicResource ListItemDetailTextStyle}"
+                                            FontSize="15" />
+                                    </StackLayout>
+                                </StackLayout>
+                                <StackLayout Padding="10" Grid.Column="1" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                                    <Label Text="{Binding TotalAmount, StringFormat='PHP {0:n}'}" 
+                                                d:Text="{Binding .}"
+                                                LineBreakMode="NoWrap" 
+                                                Style="{DynamicResource ListItemTextStyle}" 
+                                                FontSize="20"
+                                                HorizontalOptions="EndAndExpand"
+                                                HorizontalTextAlignment="End"
+                                                VerticalOptions="Center"
+                                                FontAttributes="Bold"/>
+                                    <Stepper Maximum="999"
+                                                Minimum="-999"
+                                                Increment="1"
+                                                VerticalOptions="Center"
+                                                HorizontalOptions="End"
+                                                Value="1"
+                                                ValueChanged="OnStepperQtyValueChanged" />
+                                </StackLayout>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="TypeChangedOnSelectedItem"></TapGestureRecognizer>
+                                </Grid.GestureRecognizers>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+            <StackLayout Grid.Column="1" Margin="0,10,10,10" VerticalOptions="FillAndExpand" BackgroundColor="White">
+                <Label Text="TOTAL AMOUNT" 
+                        LineBreakMode="NoWrap" 
+                        Style="{DynamicResource ListItemTextStyle}" 
+                        FontSize="30"
+                        HorizontalTextAlignment="End"
+                        FontAttributes="Bold"/>
+                <Label Text="{Binding TotalSalesAmount, StringFormat='PHP {0:n}'}" 
+                        d:Text="{Binding .}"
+                        LineBreakMode="NoWrap" 
+                        Style="{DynamicResource ListItemTextStyle}" 
+                        FontSize="50"
+                        HorizontalTextAlignment="End"
+                        FontAttributes="Bold"/>
+                <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal" Padding="10" Margin="0, 50, 0, 0">
+                    <RadioButton x:Name="CashPaymentMethod"
+                        GroupName="PaymentMethod" 
+                        Text="CASH"
+                        VerticalOptions="Center"
+                        IsChecked="{Binding IsCashPayment}"/>
+                    <Label Text="CASH PAYMENT" 
+                        LineBreakMode="NoWrap" 
+                        Style="{DynamicResource ListItemTextStyle}" 
+                        FontSize="20"
+                        VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapCashPayment"></TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <RadioButton x:Name="CardPaymentMethod"
+                        GroupName="PaymentMethod" 
+                        Text="CARD"
+                        VerticalOptions="Center"
+                        HorizontalOptions="EndAndExpand"
+                        IsChecked="{Binding IsCardPayment}"/>
+                    <Label Text="CARD PAYMENT" 
+                        LineBreakMode="NoWrap" 
+                        Style="{DynamicResource ListItemTextStyle}" 
+                        FontSize="20"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapCardPayment"></TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+                <Label Text="CARD DETAILS" 
+                        LineBreakMode="NoWrap" 
+                        VerticalOptions="Center"
+                        Style="{DynamicResource ListItemTextStyle}"
+                       FontSize="Large"
+                        FontAttributes="Bold"
+                       Margin="10, 30, 0, 0"
+                       Grid.Column="0"
+                        Grid.Row="0"
+                       IsVisible="{Binding IsCardPayment}"/>
+                <Grid IsVisible="{Binding IsCardPayment}" Padding="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.5*" />
+                        <ColumnDefinition Width="8.5*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="BANK" 
+                        LineBreakMode="NoWrap" 
+                        VerticalOptions="Center"
+                        Style="{DynamicResource ListItemTextStyle}"
+                        Grid.Column="0"
+                        Grid.Row="0"/>
+                    <Label Text="REF #" 
+                        LineBreakMode="NoWrap" 
+                        VerticalOptions="Center"
+                        Style="{DynamicResource ListItemTextStyle}"
+                        Grid.Column="0"
+                        Grid.Row="1"/>
+                    <Entry x:Name="txtBank"
+                        Text="{Binding Bank}"
+                           Placeholder="Please enter the card bank" 
+                           HorizontalOptions="FillAndExpand" 
+                           VerticalOptions="Center"
+                           Keyboard="Text"
+                           HeightRequest="45"
+                            Grid.Column="1"
+                            Grid.Row="0"/>
+                    <Entry x:Name="txtBankRefNo"
+                           Text="{Binding BankRefNo}"
+                           Placeholder="Please enter the bank ref. no." 
+                           HorizontalOptions="FillAndExpand" 
+                           VerticalOptions="Center"
+                           Keyboard="Numeric"
+                           HeightRequest="45"
+                            Grid.Column="1"
+                            Grid.Row="1"/>
+                </Grid>
+                <StackLayout VerticalOptions="EndAndExpand">
+                    <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
+                    <Button x:Name="btnCharge"
+                        Text="CHARGE"
+                        FontSize="40"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        HeightRequest="100"
+                        BackgroundColor="ForestGreen"
+                        IsEnabled="{Binding IsNotBusy}"
+                        Command="{Binding SubmitSalesCommand}"/>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
